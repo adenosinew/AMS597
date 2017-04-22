@@ -1,13 +1,17 @@
 #' Weighted Z-test Combination
 #'
-#' @param data
-#' @param alternative
+#' @param data Data Frame
+#' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' weightZ(x, less)
 weightZ <- function(data, alternative = c("two.sided", "less", "greater")){
+
+  METHOD <- "Weighted Z-test Combination"
+
   # Prepare the data
   source(dataPrep(data))
 
@@ -17,10 +21,12 @@ weightZ <- function(data, alternative = c("two.sided", "less", "greater")){
 
   # Calculate Paired sample and two-sample t-tests
   #* should I use t.test() with paired argument or pairwise.t.test()?
-  pair.sample.test <- t.test(n1.matrix[,1], n1.matrix[,2], alternative, paired = TRUE)
+  if (alternative=="two.sided") alter <- "greater"
+  else alter <- alternative
+  pair.sample.test <- t.test(n1.matrix[,1], n1.matrix[,2], alternative = alter, paired = TRUE)
   p1 <- pair.sample.test$p.value
   #* should I check the var.equal in this case?
-  two.sample.test <- t.test(n1.matrix[,1], n1.matrix[,2], alternative, paired = FALSE)
+  two.sample.test <- t.test(n1.matrix[,1], n1.matrix[,2], alternative = alter, paired = FALSE)
   p2 <- two.sample.test$p.value
 
   # Calculate Za from p value
@@ -36,6 +42,9 @@ weightZ <- function(data, alternative = c("two.sided", "less", "greater")){
     else pc <- 2*(1-pc)
   }
 
-  # Return values
-  return(p.value <- pc)
+  # P values
+  pv <- pc
+
+  # Output
+  output(p.value=pv, METHOD)
 }

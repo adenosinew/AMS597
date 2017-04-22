@@ -1,15 +1,15 @@
 #' modified t-statistic of Kim et al.
 #'
-#' @param data
-#' @param alternative
+#' @param data Data Frame
+#' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.
 #'
-#' @return
+#' @return A list with statistics and p value
 #' @export
 #'
 #' @examples
-modTstat <-
-  function(data,
-           alternative = c("two.sided", "less", "greater")) {
+#' modTstat(x, "less")
+modTstat <- function(data,alternative = c("two.sided", "less", "greater")) {
+
     METHOD <- "Modified t-statistic of Kim et al."
 
     # Prepare the data
@@ -19,43 +19,28 @@ modTstat <-
     # n1 group
     Dbar <- mean(n1.matrix[, 1] - n1.matrix[, 2])
     # n2 group
-    Tbar <- mean(vecn2, na.rm = TRUE)
+    Tbar <- mean(vecn2)
     # n3 group
-    Nbar <- mean(vecn3, na.rm = TRUE)
+    Nbar <- mean(vecn3)
 
     # calculate sample standard deviations
     # n1 group
     SD <- sd(n1.matrix[, 1] - n1.matrix[, 2])
     # n2 group
-    ST <- sd(vecn2, na.rm = TRUE)
+    ST <- sd(vecn2)
     # n3 group
-    SN <- sd(vecn3, na.rm = TRUE)
+    SN <- sd(vecn3)
 
     #* calculate harmonic mean
     nh <- 2 / (1 / n2 + 1 / n3)
 
     # calculate t3
-    t3 <-
-      (n1 * Dbar + nh * (Tbar - Nbar)) / sqrt(n1 * (SD ^ 2) + (nh ^ 2) * ((SN ^
-                                                                               2) / n3 + (ST ^ 2) / n2))
+    t3 <-(n1 * Dbar + nh * (Tbar - Nbar)) / sqrt(n1 * (SD ^ 2) + (nh ^ 2) * ((SN ^2) / n3 + (ST ^ 2) / n2))
 
     # calculate pvalue
-    if (alternative == "two.sided") {
-      pv <- 2 * pnorm(abs(t3), lower.tail = FALSE)
-    }
-    if (alternative == "less") {
-      pv <- pnorm(t3, lower.tail = TRUE)
-    }
-    if (alternative == "greater") {
-      pv <- pnorm(t3, lower.tail = FALSE)
-    }
-    else{
-      warning("alternative must be two.sided, less or greater")
-    }
-    return(list(
-      statistic <-  t3,
-      p.value <- pv,
-      method = METHOD
-    ))
+    pv <- pval(t3, alternative)
+
+    #output the result
+    output(t3, pv, METHOD)
 
   }

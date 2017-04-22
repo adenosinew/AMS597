@@ -1,35 +1,38 @@
-#' Title
+#' MLE method procedure under homo- or heteroscedasticity
 #'
-#' @param data
-#' @param var.equal
-#' @param alternative
+#' @param data Data Frame
+#' @param var.equal a logical variable indicating whether to treat the two variances as being equal. If TRUE then the process homo- MLE otherwise heteroscdasticity case is used.
+#' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' mle(x)
+#' mle(x, var.equal = F, alternative = less)
 mle <- function(data, var.equal = TRUE, alternative=c("two.sided","less","greater")){
   # Prepare the data
   source(dataPrep(data))
 
   # For MLE methods
-  Tbar <- mean(vecn2, na.rm = TRUE)
-  Nbar <- mean(vecn3, na.rm = TRUE)
+  Tbar <- mean(vecn2)
+  Nbar <- mean(vecn3)
 
-  Tbar1 <- mean(n1.matrix[,1], na.rm=TRUE)
-  Nbar1 <- mean(n1.matrix[,2], na.rm=TRUE)
+  Tbar1 <- mean(n1.matrix[,1])
+  Nbar1 <- mean(n1.matrix[,2])
 
-  ST <- sd(vecn2, na.rm = TRUE)
-  SN <- sd(vecn3, na.rm = TRUE)
+  ST <- sd(vecn2)
+  SN <- sd(vecn3)
 
-  ST1 <- sd(n1.matrix[,1], na.rm=TRUE)
-  SN1 <- sd(n1.matrix[,2], na.rm = TRUE)
+  ST1 <- sd(n1.matrix[,1])
+  SN1 <- sd(n1.matrix[,2])
   STN1 <- cov(n1.matrix)
 
   r <- STN1/(ST1*SN1)
 
   # For homo- case
   if (var.equal==TRUE){
+    METHOD <- "MLE based test of Ekbohm under homoscedasticity"
     sigma2t <- (ST1^2)*(n1-1)
     sigma2n <- (SN1^2)*(n1-1)
     sigma2tn <- (1+r^2)*((ST^2)(n2-1)+(SN^2)(n3-1))
@@ -42,6 +45,7 @@ mle <- function(data, var.equal = TRUE, alternative=c("two.sided","less","greate
 
   # For heteroscedasticity case
   if (var.equal==FALSE){
+    METHOD <- "MLE based test of Lin and Stivers under heteroscedasticity"
     f <- n1*(n1+n3+n2*STN1/(ST1^2))*(((n1+n2)*(n1+n3)-n2*n3*(r^2))^(-1))
     g <- n1*(n1+n2+n3*STN1/(SN1^2))*(((n1+n2)*(n1+n3)-n2*n3*(r^2))^(-1))
     vt <- (((f^2)/n1)+((1-f)^2)/n2)*(ST1^2)*(n1-1)
@@ -52,14 +56,8 @@ mle <- function(data, var.equal = TRUE, alternative=c("two.sided","less","greate
   }
 
   # Calculate p value
-  if (alternative == "two.sided") {
-    pval = 2 * pnorm(abs(zmle), lower.tail = F)
-  }
-  if (alternative == "greater") {
-    pval = pnorm(zmle, lower.tail = F)
-  }
-  if (alternative == "less") {
-    pval = pnorm(Zmle, lower.tail = T)
-  }
-  return(STATISTIC <- zmle, p.value <- pval)
+  pv <- pval(zmle, alternative)
+
+  # Output
+  output(zmle, pv, METHOD)
 }

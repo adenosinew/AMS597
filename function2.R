@@ -16,7 +16,7 @@
 #' @examples
 #' x <- c(3,2,5,13,54,63,22,11,NA,NA,NA)
 #' y <- c(8,3,10,NA,NA,NA,NA,NA,43,96,14)
-#' corrected_z(x,y) # z.stat = -0.4384378  p.value = 0.6610690
+#' corrected_Z(x,y) # z.stat = -0.4384378  p.value = 0.6610690
 
 
 corrected_Z<-function(x,y,alternative="two.sided",mu=0){

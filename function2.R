@@ -9,9 +9,9 @@
 #' @param mu a number indicating the true value of the mean (or difference in means if you are performing a two sample test).
 #'
 #' @return A list containing the following components
-#' @param statistic the value of the corrected Z-test statistic.
-#' @param p.value the p-value for the test.
-#' @param method the method the function used.
+#' @return \code{statistic} the value of the corrected Z-test statistic.
+#' @return \code{p.value} the p-value for the test.
+#' @return \code{method} the method the function used.
 #'
 #' @examples
 #' x <- c(3,2,5,13,54,63,22,11,NA,NA,NA)
@@ -48,5 +48,5 @@ corrected_Z<-function(x,y,alternative="two.sided",mu=0){
     p.value=pnorm(z.stat,lower.tail=T)
   }
   return(list(statistic=z.stat,p.value=p.value,METHOD=method))
-  
+
 }

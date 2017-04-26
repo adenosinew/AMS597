@@ -5,11 +5,11 @@
 #'
 #' @param x a (non-empty) numberic vector of data values.
 #' @param y a (non-empty) numberic vector of data values.
-#' @param alternative a character string indicates the alternative hypothesis and must be one of "two.sided", "greater" or "less". 
+#' @param alternative a character string indicates the alternative hypothesis and must be one of "two.sided", "greater" or "less".
 #'
 #' @return A list containing the following components:
-#' @param pc the value of weighted z test combination statistic
-#' @param p.value the p-value for the test
+#' @return \code{pc} the value of weighted z test combination statistic
+#' @return \code{p.value} the p-value for the test
 #'
 #' @examples
 #' x <- c(3,5,8,12,9,23,42,NA,58,NA,NA)
@@ -44,4 +44,3 @@ weighted.z.test<-function(x,y,alternative){
 		}
 	return(list(pc=pc,p.value=pv))
 }
-	

@@ -11,6 +11,15 @@ weightZ(data, alternative = c("two.sided", "less", "greater"))
 
 \item{alternative}{a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.}
 }
+\value{
+A list with statistics and p value
+
+\code{statistic} Test statistic
+
+\code{p.value} P value of test
+
+\code{METHOD} What method has been implemented
+}
 \description{
 Weighted Z-test Combination
 }

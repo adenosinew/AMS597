@@ -3,7 +3,7 @@
 #' @param data Data Frame
 #' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.
 #'
-#' @return A list with statistics and p value
+#' @return A list with statistics and p value \code{statis}
 #' @export
 #'
 #' @examples

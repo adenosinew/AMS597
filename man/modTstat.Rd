@@ -12,7 +12,7 @@ modTstat(data, alternative = c("two.sided", "less", "greater"))
 \item{alternative}{a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.}
 }
 \value{
-A list with statistics and p value
+A list with statistics and p value \code{statis}
 }
 \description{
 modified t-statistic of Kim et al.

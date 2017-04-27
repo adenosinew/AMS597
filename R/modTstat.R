@@ -8,13 +8,12 @@
 #'
 #' @examples
 #' modTstat(x, "less")
-modTstat <- function(data,alternative = c("two.sided", "less", "greater")) {
+modTstat <- function(x,alternative = c("two.sided", "less", "greater")) {
 
     METHOD <- "Modified t-statistic of Kim et al."
 
     # Prepare the data
-    source(dataPrep(data))
-
+    source(dataPrep(x,alternative))
     # calculate mean difference of n1 and mean of n2 and n3
     # n1 group
     Dbar <- mean(n1.matrix[, 1] - n1.matrix[, 2])

@@ -11,7 +11,6 @@
 #' @return A list containing the following components
 #' @return \code{statistic} the value of the corrected Z-test statistic.
 #' @return \code{p.value} the p-value for the test.
-#' @return \code{method} the method the function used.
 #'
 #' @examples
 #' x <- c(3,2,5,13,54,63,22,11,NA,NA,NA)
@@ -49,7 +48,7 @@ corrected_Z<-function(x,y,alternative="two.sided",mu=0){
     print(t.test(x,y,paired = T))
   }
   else{
-  z.stat<-(mean(t0)-mean(n0)-mu)/sqrt(sd(t0)^2/(n1+n2)+sd(n0)^2/(n1+n3)-2*n1*s/(n1+n2)/(n1+n3))
+  z.stat<-(mean(t0)-mean(n0)-mu)/sqrt(sd(t0)^2/(n1+n2)+sd(n0)^2/(n1+n3)-2*n1/(n1+n2)/(n1+n3))
   if(alternative=="two.sided"){
     p.value=2*pnorm(abs(z.stat),lower.tail=F)
   }
@@ -59,6 +58,6 @@ corrected_Z<-function(x,y,alternative="two.sided",mu=0){
   if(alternative=="less"){
     p.value=pnorm(z.stat,lower.tail=T)
   }
-  return(list(statistic=z.stat,p.value=p.value,METHOD=method))
+  return(list(statistic=z.stat,p.value=p.value))
 }}
 }

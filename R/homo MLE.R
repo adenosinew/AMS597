@@ -15,8 +15,8 @@
 #' @export
 #'
 #' @examples
-#' Zstar(x,y,alternative = "two.sided")
-Zstar <- function(x, y, alternative=c("two.sided","less","greater")) {
+#' homeMLE(x,y,alternative = "two.sided")
+homoMLE <- function(x, y, alternative=c("two.sided","less","greater")) {
 
   if (length(x)!=length(y)){
     print(t.test(x,y))

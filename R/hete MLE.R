@@ -10,9 +10,9 @@
 #' @export
 #'
 #' @examples
-#' Z.ls(x,y,alternative="greater")
+#' heteMLE(x,y,alternative="greater")
 
-Z.ls=function(x,y,alternative="two.sided"){
+heteMLE <- function(x,y,alternative="two.sided"){
 
   if (length(x)!=length(y)){
     print(t.test(x,y))

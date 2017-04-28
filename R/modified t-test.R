@@ -2,18 +2,18 @@
 #'
 #' @param x value of the "tumor"
 #' @param y value of the "normal"
-#' @param alternative
-#' @param mu
+#' @param alternative a character string indicates the alternative hypothesis and must be one of "two.sided", "greater" or "less".
 #'
-#' @return \code{statistic} value of statistic
-#' @return \code{p.value} P value
+#' @return A list containing the following components:
+#' @return \code{statistic} the value of weighted z test combination statistic
+#' @return \code{p.value} the p-value for the test
 #' @export
 #'
 #' @examples
 #' x <- c(1,2,3,4,NA,NA,1)
 #' y <- c(1,2,5)
 #' my.mod.t.test(x,y)
-my.mod.t.test = function (x,y,alternative="two.sided",mu=0){
+modttest = function (x,y,alternative="two.sided"){
 
   if (length(x)!=length(y)){
     t <- t.test(x,y)

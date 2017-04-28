@@ -1,0 +1,81 @@
+---
+title: "A Simple and Robust Method for Partially Matched Samples Using the P-Values Pooling Approach"
+author: "Kexing Wu"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+This package is based on Professor Kuan's paper^[A Simple and Robust Method for Partially Matched Samples Using the P-Values Pooling Approach, 2013].
+
+It provided a statistical analyses in scenarios where some samples from the matched pairs design are missing, resulting in partially matched samples. 
+
+## Package Info 
+
+This package could process 5 procedures:
+
+- modified t-statistic of Kim et al.
+- corrected Z-test of Looney and Jones
+- MLE based test of Ekbohm under homoscedasticity
+- MLE based test of Lin and Stivers under heteroscedasticity
+- weighted Z-test combination
+
+## Arguments
+### data
+data is a **data frame** have two columns, the first column is tumor data and the second colum is normal data. **NA** values for missing data.
+
+### var.equal
+For MLE based procedure, if `var.equal=T` will process homo- case and `var.equal=F` will process heteroscedasticity case.
+
+## Formulas & Usages
+### Modified t-statistic of Kim et al.
+The modified t-statistic $t_3$ of Kim et al.^[Kim B, Kim I, Lee S, Kim S, Rha S, Chung H. Statistical methods of translating microarray data into clinically relevant diagnostic information in colorectal cancer. Bioinformatics. 2004; 21(4): 517–528. [PubMed: 15374865]] takes the form
+$$
+\begin{aligned}
+ t_3=\frac{{n_1}\bar{D}+{n_H}(\bar{T}-\bar{N})}{\sqrt{{n_1}{S_D}^2+{n_H}^2(S_N^2/n_3+S_T^2/n_2)}}
+\end{aligned}
+$$
+And the null distribution of $t_3$ is approcimated with a standard Gaussian distribution.
+
+One can call this function in the package e.g. `modTstat(data, alternative="less")`.
+
+### Corrected Z-test of Looney and Jones
+The corrected Z-test of Looney and Jones^[ Looney S, Jones P. A method for comparing two normal means using combined samples of correlated and uncorrelated data. Statistics in Medicine. 2003; 22:1601–1610.] is based on a modified variance estimation of the standard Z-test by accounting for the correlation among the $n_1$ matched pairs,
+$$
+\begin{aligned}
+ Z_{corr}=\frac{\bar{T^*}-\bar{N^*}}{\sqrt{S_T^{*2}/(n_1+n_2)+S_N^{*2}/(n_1+n_3)-2n_1S_{TN_1}/(n_1+n_2)(n_1+n_3)}}
+\end{aligned}
+$$
+
+e.g. `corrZtest(data, alternative="less")`
+
+### MLE based test
+
+There are two kinds of MLE based test. The first is proposed by Ekbohm^[ Ekbohm G. On comparing means in the paired case with incomplete data on both responses. Biometrika. 1976;63(2):299–304. ] and the second is proposed by Lin and Stivers^[ Lin P, Stivers L. On differences of means with incomplete data. Biometrika. 1974; 61(2):325–334. ].
+
+Both MLE based test under homo- or heteroscedasticity have similar form like this:
+$$
+\begin{aligned}
+ Z_{LS}=\frac{f(\bar{T_1}-\bar{T})-g(\bar{N_1}-\bar{N})+\bar{T}-\bar{N}}{\sqrt{V_1}}
+\end{aligned}
+$$
+
+e.g. `mle(data. var.equal=T)`
+
+### Wighted Z-test Combination
+
+The combined p-value by the weighted Z-test introduced by Liptak^[Liptak T. On the combination of independent tests. Magyar Tudom Aanyos Akad Aemia Matematikai Kutat Ao Intezetenek Kozlemenyei. 1958; 3:171–197. ] is:
+$$
+\begin{aligned}
+ p_{ci}=1-\Phi(\frac{w_1Z_{1i}+w_2Z_{2i}}{\sqrt{w_1^2+w_2^2}})
+\end{aligned}
+$$
+
+e.g. `mle(data, alternative="two.sided")`
+
+## Simulation Example

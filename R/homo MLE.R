@@ -71,13 +71,13 @@ homoMLE <- function(x, y, alternative=c("two.sided","less","greater")) {
     Z.star = (fstar * (T1_bar - T_bar) - gstar * (N1_bar - N_bar) + T_bar -
                   N_bar) / sqrt(V1_star)
     if (alternative == "greater") {
-      P.value = pt(Z.star, lower.tail = F)
+      P.value = pt(Z.star, n1, lower.tail = F)
     }
     else if (alternative == "less") {
-      P.value = pt(Z.star, lower.tail = T)
+      P.value = pt(Z.star, n1, lower.tail = T)
     }
     else if (alternative == "two.sided") {
-      P.value = 2 * pt(abs(Z.star), lower.tail = F)
+      P.value = 2 * pt(abs(Z.star), n1, lower.tail = F)
     }
 
     return(list(Z.star = Z.star, P.value = P.value))}

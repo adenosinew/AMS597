@@ -16,7 +16,7 @@
 #' y <- c(10,5,NA,8,NA,NA,18,NA,45,66,44)
 #' weighted.z.test(x,y,alternative="two.sided") #pc=1.234111  p.value=0.2171614
 
-weighted.z.test <- function(x, y, alternative=c("two.sided","less","greater")) {
+weighted.z.test <- function(x, y, alternative="two.sided") {
 
   if (length(x)!=length(y)){
     print(t.test(x,y))

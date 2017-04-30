@@ -16,7 +16,7 @@
 #'
 #' @examples
 #' homeMLE(x,y,alternative = "two.sided")
-homoMLE <- function(x, y, alternative=c("two.sided","less","greater")) {
+homoMLE <- function(x, y, alternative="two.sided") {
 
   if (length(x)!=length(y)){
     print(t.test(x,y))

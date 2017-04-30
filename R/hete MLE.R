@@ -12,39 +12,60 @@
 #' @examples
 #' heteMLE(x,y,alternative="greater")
 
-heteMLE <- function(x,y,alternative="two.sided"){
-
-  if (length(x)!=length(y)){
+heteMLE <- function(x, y, alternative = "two.sided") {
+  if (length(x) != length(y)) {
     warning("tumor sample and normal sample have different dimension. Reduce to two sample t test")
-    Ttest <- t.test(x,y)
-    return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
+    Ttest <- t.test(x, y)
+    return(
+      list(
+        statistic <-
+          Ttest$statistic,
+        p.value <- Ttest$p.value,
+        METHOD <- "Two sample T test"
+      )
+    )
   }
   else{
-    paired.x<-x[!is.na(x)==!is.na(y)]
-    paired.y<-y[!is.na(x)==!is.na(y)]
-    tumor<-x[!is.na(x) & is.na(y)]
-    normal<-y[is.na(x) & !is.na(y)]
-    n1<-length(paired.x)
-    n2<-length(tumor)
-    n3<-length(normal)
+    paired.x <- x[!is.na(x) == !is.na(y)]
+    paired.y <- y[!is.na(x) == !is.na(y)]
+    tumor <- x[!is.na(x) & is.na(y)]
+    normal <- y[is.na(x) & !is.na(y)]
+    n1 <- length(paired.x)
+    n2 <- length(tumor)
+    n3 <- length(normal)
 
-    if (n1==1|n2==1|n3==1) {
+    if (n1 == 1 | n2 == 1 | n3 == 1) {
       stop("not enough observations")
     }
 
-    if(n1==0){
+    if (n1 == 0) {
       warning("No paired sample found. Reduce to two sample t test")
-      Ttest <- t.test(x,y)
-      return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
+      Ttest <- t.test(x, y)
+      return(
+        list(
+          statistic <-
+            Ttest$statistic,
+          p.value <- Ttest$p.value,
+          METHOD <- "Two sample T test"
+        )
+      )
     }
 
-    if(n2==0 & n3==0){
+    if (n2 == 0 & n3 == 0) {
       warning("No unpaired sample found. Reduce to paired t test")
-      Ttest <- t.test(x,y,paired = TRUE)
-      return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
+      Ttest <- t.test(x, y, paired = TRUE)
+      return(
+        list(
+          statistic <-
+            Ttest$statistic,
+          p.value <- Ttest$p.value,
+          METHOD <- "Two sample T test"
+        )
+      )
     }
     else{
-      method <- "MLE based test of Lin and Stivers under heteroscedasticity"
+      method <-
+        "MLE based test of Lin and Stivers under heteroscedasticity"
       T_bar <- mean(tumor)
       N_bar <- mean(normal)
       sd_T <- sd(tumor)
@@ -83,9 +104,12 @@ heteMLE <- function(x,y,alternative="two.sided"){
           "The input for parameter \"alternative\" is not correct. It can only be \"greater\", \"less\" or \"two.sided\"."
         )
       }
-      return(list(statistic = Z.ls, p.value = P.value, METHOD <- method))
+      return(list(
+        statistic = Z.ls,
+        p.value = P.value,
+        METHOD <- method
+      ))
     }
 
   }
 }
-

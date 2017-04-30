@@ -19,7 +19,9 @@
 homoMLE <- function(x, y, alternative="two.sided") {
 
   if (length(x)!=length(y)){
-    print(t.test(x,y))
+    warning("tumor sample and normal sample have different dimension. Reduce to two sample t test")
+    Ttest <- t.test(x,y)
+    return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
   }
   else{
     paired.x<-x[!is.na(x)==!is.na(y)]
@@ -35,14 +37,18 @@ homoMLE <- function(x, y, alternative="two.sided") {
     }
 
     if(n1==0){
-      print(t.test(x,y))
+      warning("No paired sample found. Reduce to two sample t test")
+      Ttest <- t.test(x,y)
+      return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
     }
 
     if(n2==0 & n3==0){
-      print(t.test(x,y,paired = T))
+      warning("No unpaired sample found. Reduce to paired t test")
+      Ttest <- t.test(x,y,paired = TRUE)
+      return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
     }
-
     else{
+      method <- "MLE based test of Ekbohm under homoscedasticity"
     T_bar <- mean(tumor)
     N_bar <- mean(normal)
     sd_T <- sd(tumor)
@@ -79,8 +85,11 @@ homoMLE <- function(x, y, alternative="two.sided") {
     else if (alternative == "two.sided") {
       P.value = 2 * pt(abs(Z.star), n1, lower.tail = F)
     }
+    else{
+      stop("Alternative must be one of \"two.sided\",\"greater\" or \"less\"")
+    }
 
-    return(list(Z.star = Z.star, P.value = P.value))}
+    return(list(statistic = Z.star, p.value = P.value, METHOD <- method))}
   }}
 
 

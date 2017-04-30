@@ -15,7 +15,9 @@
 heteMLE <- function(x,y,alternative="two.sided"){
 
   if (length(x)!=length(y)){
-    print(t.test(x,y))
+    warning("tumor sample and normal sample have different dimension. Reduce to two sample t test")
+    Ttest <- t.test(x,y)
+    return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
   }
   else{
     paired.x<-x[!is.na(x)==!is.na(y)]
@@ -31,14 +33,18 @@ heteMLE <- function(x,y,alternative="two.sided"){
     }
 
     if(n1==0){
-      print(t.test(x,y))
+      warning("No paired sample found. Reduce to two sample t test")
+      Ttest <- t.test(x,y)
+      return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
     }
 
     if(n2==0 & n3==0){
-      print(t.test(x,y,paired = T))
+      warning("No unpaired sample found. Reduce to paired t test")
+      Ttest <- t.test(x,y,paired = TRUE)
+      return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
     }
-
     else{
+      method <- "MLE based test of Lin and Stivers under heteroscedasticity"
       T_bar <- mean(tumor)
       N_bar <- mean(normal)
       sd_T <- sd(tumor)
@@ -77,7 +83,7 @@ heteMLE <- function(x,y,alternative="two.sided"){
           "The input for parameter \"alternative\" is not correct. It can only be \"greater\", \"less\" or \"two.sided\"."
         )
       }
-      return(list(Z.ls = Z.ls, P.value = P.value))
+      return(list(statistic = Z.ls, p.value = P.value, METHOD <- method))
     }
 
   }

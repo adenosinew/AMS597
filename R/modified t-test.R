@@ -16,9 +16,9 @@
 modttest = function (x,y,alternative="two.sided"){
 
   if (length(x)!=length(y)){
-    t <- t.test(x,y)
-    t3 <- t$statistic
-    p.value <- t$p.value
+    warning("tumor sample and normal sample have different dimension. Reduce to two sample t test")
+    Ttest <- t.test(x,y)
+    return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
   }
   else {
  paired.x <-x[!is.na(x)==!is.na(y)]
@@ -38,14 +38,23 @@ modttest = function (x,y,alternative="two.sided"){
  if (n1==1|n2==1|n3==1) {
    stop("not enough observations")
  }
+ if(n1==0){
+   warning("No paired sample found. Reduce to two sample t test")
+   Ttest <- t.test(x,y)
+   return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
+ }
+
+ if(n2==0 & n3==0){
+   warning("No unpaired sample found. Reduce to paired t test")
+   Ttest <- t.test(x,y,paired = TRUE)
+   return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
+ }
  else {
- VD <- var(D[!is.na(D)])
+ method <- "Modified T test"
+   VD <- var(D[!is.na(D)])
  VT <- var(tumor[!is.na(tumor)])
  VN <- var(normal[!is.na(normal)])
-
-
- if (n1!=0 & n2!=0 & n3!=0)
- { t3 <- (n1*Dbar+nh*(tumorbar-normalbar))/sqrt(n1*VD+nh^2*(VN/n3+VT/n2))
+  t3 <- (n1*Dbar+nh*(tumorbar-normalbar))/sqrt(n1*VD+nh^2*(VN/n3+VT/n2))
  if(alternative=="two.sided"){
    p.value=2*pnorm(abs(t3),lower.tail=F)
  }
@@ -55,18 +64,8 @@ modttest = function (x,y,alternative="two.sided"){
  if(alternative=="less"){
    p.value=pnorm(t3,lower.tail=T)
  }
- }
-
-  if (n2==0 | n3 == 0 & n1!=0) {
-   t <- t.test(D)
-   t3 <- t$statistic
-   p.value <- t$p.value
- }
-  if (n1==0){
-    t <- t.test(x,y)
-    t3 <- t$statistic
-    p.value <- t$p.value
+  else{
+    stop("Alternative must be one of \"two.sided\",\"greater\" or \"less\"")
   }
- }}
   return(list(statistic=t3,p.value=p.value))
-  }
+  }}}

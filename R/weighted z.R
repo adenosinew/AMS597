@@ -8,8 +8,9 @@
 #' @param alternative a character string indicates the alternative hypothesis and must be one of "two.sided", "greater" or "less".
 #'
 #' @return A list containing the following components:
-#' @return \code{statistic} the value of weighted z test combination statistic
-#' @return \code{p.value} the p-value for the test
+#' \item{statistic}{the value of weighted z test combination statistic}
+#' \item{p.value}{the p-value for the test}
+#' \item{METHOD}{the method we implement}
 #'
 #' @examples
 #' x <- c(3,5,8,12,9,23,42,NA,58,NA,NA)
@@ -19,7 +20,9 @@
 weighted.z.test <- function(x, y, alternative="two.sided") {
 
   if (length(x)!=length(y)){
-    print(t.test(x,y))
+    warning("tumor sample and normal sample have different dimension. Reduce to two sample t test")
+    Ttest <- t.test(x,y)
+    return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
   }
   else{
   paired.x <- x[!is.na(x) == !is.na(y)]
@@ -34,14 +37,19 @@ weighted.z.test <- function(x, y, alternative="two.sided") {
   }
 
   if(n1==0){
-    print(t.test(x,y))
+    warning("No paired sample found. Reduce to two sample t test")
+    Ttest <- t.test(x,y)
+    return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
   }
 
   if(n2==0 & n3==0){
-    print(t.test(x,y,paired = T))
+    warning("No unpaired sample found. Reduce to paired t test")
+    Ttest <- t.test(x,y,paired = TRUE)
+    return(list(statistic <- Ttest$statistic,p.value <- Ttest$p.value, METHOD <- "Two sample T test"))
   }
 
   else{
+  method <- "Weighted Z combination"
   w1 <- sqrt(n1)
   w2 <- sqrt(n2 + n3)
   t1 <- t.test(paired.x, paired.y, alternative, paired = TRUE)
@@ -60,5 +68,8 @@ weighted.z.test <- function(x, y, alternative="two.sided") {
   if (alternative == "two.sided") {
     pv <- 2 * min(pnorm(pc), 1 - pnorm(pc))
   }
-  return(list(statistic = pc, p.value = pv))
+  else{
+    stop("Alternative must be one of \"two.sided\",\"greater\" or \"less\"")
+  }
+  return(list(statistic = pc, p.value = pv, METHOD <- method))
 }}}

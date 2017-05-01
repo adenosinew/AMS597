@@ -19,11 +19,12 @@
 homoMLE <- function(x, y, alternative = "two.sided") {
   if (length(x) != length(y)) {
     warning("tumor sample and normal sample have different dimension. Reduce to two sample t test")
-    Ttest <- t.test(x, y)
+    Ttest <- t.test(x, y, alternative = alternative)
     return(
       list(
         statistic <-
           Ttest$statistic,
+        parameter <- Ttest$parameter,
         p.value <- Ttest$p.value,
         METHOD <- "Two sample T test"
       )
@@ -44,11 +45,12 @@ homoMLE <- function(x, y, alternative = "two.sided") {
 
     if (n1 == 0) {
       warning("No paired sample found. Reduce to two sample t test")
-      Ttest <- t.test(x, y)
+      Ttest <- t.test(x, y, alternative = alternative)
       return(
         list(
           statistic <-
             Ttest$statistic,
+          parameter <- Ttest$parameter,
           p.value <- Ttest$p.value,
           METHOD <- "Two sample T test"
         )
@@ -57,11 +59,12 @@ homoMLE <- function(x, y, alternative = "two.sided") {
 
     if (n2 == 0 & n3 == 0) {
       warning("No unpaired sample found. Reduce to paired t test")
-      Ttest <- t.test(x, y, paired = TRUE)
+      Ttest <- t.test(x, y, alternative = alternative,paired = TRUE)
       return(
         list(
           statistic <-
             Ttest$statistic,
+          parameter <- Ttest$parameter,
           p.value <- Ttest$p.value,
           METHOD <- "Two sample T test"
         )
@@ -107,13 +110,14 @@ homoMLE <- function(x, y, alternative = "two.sided") {
       else if (alternative == "two.sided") {
         P.value = 2 * pt(abs(Z.star), n1, lower.tail = F)
       }
-      else{
-        stop("Alternative must be one of \"two.sided\",\"greater\" or \"less\"")
-      }
+      # else{
+      #   stop("Alternative must be one of \"two.sided\",\"greater\" or \"less\"")
+      # }
 
       return(list(
         statistic = Z.star,
         p.value = P.value,
+        parameter = n1,
         METHOD <- method
       ))
     }

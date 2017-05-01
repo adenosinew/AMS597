@@ -24,7 +24,7 @@ corrected_Z <- function(x,
                         mu = 0) {
   if (length(x) != length(y)) {
     warning("tumor sample and normal sample have different dimension. Reduce to two sample t test")
-    Ttest <- t.test(x, y)
+    Ttest <- t.test(x, y, alternative = alternative)
     return(
       list(
         statistic <-
@@ -52,7 +52,7 @@ corrected_Z <- function(x,
 
     if (n1 == 0) {
       warning("No paired sample found. Reduce to two sample t test")
-      Ttest <- t.test(x, y)
+      Ttest <- t.test(x, y, alternative = alternative)
       return(
         list(
           statistic <-
@@ -65,7 +65,7 @@ corrected_Z <- function(x,
 
     if (n2 == 0 & n3 == 0) {
       warning("No unpaired sample found. Reduce to paired t test")
-      Ttest <- t.test(x, y, paired = TRUE)
+      Ttest <- t.test(x, y, alternative = alternative, paired = TRUE)
       return(
         list(
           statistic <-
@@ -89,9 +89,9 @@ corrected_Z <- function(x,
       if (alternative == "less") {
         p.value = pnorm(z.stat, lower.tail = T)
       }
-      else{
-        stop("Alternative must be one of \"two.sided\",\"greater\" or \"less\"")
-      }
+      # else{
+      #   stop("Alternative must be one of \"two.sided\",\"greater\" or \"less\"")
+      # }
       return(list(
         statistic = z.stat,
         p.value = p.value,

@@ -85,10 +85,10 @@ homoMLE <- function(x, y, alternative = "two.sided") {
       r <- sd_TN1 / (sd_N1 * sd_T1)
 
       fstar <-
-        n1 * (n1 + n3 + n2 * sd_TN1 / (sd_T1 ^ 2)) * ((n1 + n2) * (n1 + n3) - n2 * n3 * r ^
+        n1 * (n1 + n3 + n2 * r) * ((n1 + n2) * (n1 + n3) - n2 * n3 * r ^
                                                         2) ^ (-1)
       gstar <-
-        n1 * (n1 + n2 + n3 * sd_TN1 / (sd_T1 ^ 2)) * ((n1 + n2) * (n1 + n3) - n2 * n3 * r ^
+        n1 * (n1 + n2 + n3 * r) * ((n1 + n2) * (n1 + n3) - n2 * n3 * r ^
                                                         2) ^ (-1)
 
       sigma2 <-

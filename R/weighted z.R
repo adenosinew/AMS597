@@ -23,10 +23,10 @@ weighted.z.test <- function(x, y, alternative = "two.sided") {
     Ttest <- t.test(x, y, alternative = alternative)
     return(
       list(
-        statistic <-
+        statistic =
           Ttest$statistic,
-        p.value <- Ttest$p.value,
-        METHOD <- "Two sample T test"
+        p.value = Ttest$p.value,
+        METHOD = "Two sample T test"
       )
     )
   }
@@ -47,10 +47,10 @@ weighted.z.test <- function(x, y, alternative = "two.sided") {
       Ttest <- t.test(x, y, alternative = alternative)
       return(
         list(
-          statistic <-
+          statistic =
             Ttest$statistic,
-          p.value <- Ttest$p.value,
-          METHOD <- "Two sample T test"
+          p.value = Ttest$p.value,
+          METHOD = "Two sample T test"
         )
       )
     }
@@ -60,17 +60,17 @@ weighted.z.test <- function(x, y, alternative = "two.sided") {
       Ttest <- t.test(x, y, alternative = alternative, paired = TRUE)
       return(
         list(
-          statistic <-
+          statistic =
             Ttest$statistic,
-          p.value <- Ttest$p.value,
-          METHOD <- "Two sample T test"
+          p.value = Ttest$p.value,
+          METHOD = "Two sample T test"
         )
       )
     }
 
     else{
       method <- "Weighted Z combination"
-      w1 <- sqrt(n1)
+      w1 <- sqrt(2 * n1)
       w2 <- sqrt(n2 + n3)
       if (alternative == "two.sided"){
         alter <- "greater"
@@ -103,9 +103,8 @@ weighted.z.test <- function(x, y, alternative = "two.sided") {
       #   stop("Alternative must be one of \"two.sided\",\"greater\" or \"less\"")
       # }
       return(list(
-        statistic = pc,
         p.value = pv,
-        METHOD <- method
+        METHOD = method
       ))
     }
   }

@@ -48,11 +48,11 @@ homoMLE <- function(x, y, alternative = "two.sided") {
       Ttest <- t.test(x, y, alternative = alternative)
       return(
         list(
-          statistic <-
+          statistic =
             Ttest$statistic,
-          parameter <- Ttest$parameter,
-          p.value <- Ttest$p.value,
-          METHOD <- "Two sample T test"
+          parameter = Ttest$parameter,
+          p.value = Ttest$p.value,
+          METHOD = "Two sample T test"
         )
       )
     }
@@ -62,11 +62,11 @@ homoMLE <- function(x, y, alternative = "two.sided") {
       Ttest <- t.test(x, y, alternative = alternative,paired = TRUE)
       return(
         list(
-          statistic <-
+          statistic =
             Ttest$statistic,
-          parameter <- Ttest$parameter,
-          p.value <- Ttest$p.value,
-          METHOD <- "Two sample T test"
+          parameter = Ttest$parameter,
+          p.value = Ttest$p.value,
+          METHOD = "Two sample T test"
         )
       )
     }
@@ -116,9 +116,9 @@ homoMLE <- function(x, y, alternative = "two.sided") {
 
       return(list(
         statistic = Z.star,
+        df = n1,
         p.value = P.value,
-        parameter = n1,
-        METHOD <- method
+        METHOD = method
       ))
     }
   }

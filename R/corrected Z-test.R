@@ -27,10 +27,10 @@ corrected_Z <- function(x,
     Ttest <- t.test(x, y, alternative = alternative)
     return(
       list(
-        statistic <-
+        statistic =
           Ttest$statistic,
-        p.value <- Ttest$p.value,
-        METHOD <- "Two sample T test"
+        p.value = Ttest$p.value,
+        METHOD = "Two sample T test"
       )
     )
   }
@@ -55,10 +55,10 @@ corrected_Z <- function(x,
       Ttest <- t.test(x, y, alternative = alternative)
       return(
         list(
-          statistic <-
+          statistic =
             Ttest$statistic,
-          p.value <- Ttest$p.value,
-          METHOD <- "Two sample T test"
+          p.value = Ttest$p.value,
+          METHOD = "Two sample T test"
         )
       )
     }
@@ -68,10 +68,10 @@ corrected_Z <- function(x,
       Ttest <- t.test(x, y, alternative = alternative, paired = TRUE)
       return(
         list(
-          statistic <-
+          statistic =
             Ttest$statistic,
-          p.value <- Ttest$p.value,
-          METHOD <- "Two sample T test"
+          p.value = Ttest$p.value,
+          METHOD = "Two sample T test"
         )
       )
     }
@@ -94,7 +94,7 @@ corrected_Z <- function(x,
       return(list(
         statistic = z.stat,
         p.value = p.value,
-        METHOD <- method
+        METHOD = method
       ))
     }
   }

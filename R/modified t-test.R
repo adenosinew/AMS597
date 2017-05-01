@@ -19,10 +19,10 @@ modttest = function (x, y, alternative = "two.sided") {
     Ttest <- t.test(x, y, alternative = alternative)
     return(
       list(
-        statistic <-
+        statistic =
           Ttest$statistic,
-        p.value <- Ttest$p.value,
-        METHOD <- "Two sample T test"
+        p.value = Ttest$p.value,
+        METHOD = "Two sample T test"
       )
     )
   }
@@ -49,10 +49,10 @@ modttest = function (x, y, alternative = "two.sided") {
       Ttest <- t.test(x, y, alternative = alternative)
       return(
         list(
-          statistic <-
+          statistic =
             Ttest$statistic,
-          p.value <- Ttest$p.value,
-          METHOD <- "Two sample T test"
+          p.value = Ttest$p.value,
+          METHOD = "Two sample T test"
         )
       )
     }
@@ -62,10 +62,10 @@ modttest = function (x, y, alternative = "two.sided") {
       Ttest <- t.test(x, y, alternative = alternative, paired = TRUE)
       return(
         list(
-          statistic <-
+          statistic =
             Ttest$statistic,
-          p.value <- Ttest$p.value,
-          METHOD <- "Two sample T test"
+          p.value = Ttest$p.value,
+          METHOD = "Two sample T test"
         )
       )
     }
@@ -89,7 +89,7 @@ modttest = function (x, y, alternative = "two.sided") {
       # else{
       #   warning("Alternative must be one of \"two.sided\",\"greater\" or \"less\"")
       # }
-      return(list(statistic = t3, p.value = p.value, METHOD <- method))
+      return(list(statistic = t3, p.value = p.value, METHOD = method))
     }
   }
 }

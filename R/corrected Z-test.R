@@ -77,9 +77,8 @@ corrected_Z <- function(x,
     }
     else{
       method <- "Corrected Z test"
-      z.stat <-
-        (mean(t0) - mean(n0) - mu) / sqrt(sd(t0) ^ 2 / (n1 + n2) + sd(n0) ^ 2 /
-                                            (n1 + n3) - 2 * n1 / (n1 + n2) / (n1 + n3))
+      s<-cov(paired.x,paired.y)
+      z.stat<-(mean(t0)-mean(n0)-mu)/sqrt(sd(t0)^2/(n1+n2)+sd(n0)^2/(n1+n3)-2*n1*s/(n1+n2)/(n1+n3))
       if (alternative == "two.sided") {
         p.value = 2 * pnorm(abs(z.stat), lower.tail = F)
       }

@@ -89,7 +89,7 @@ modttest = function (x, y, alternative = "two.sided") {
       # else{
       #   warning("Alternative must be one of \"two.sided\",\"greater\" or \"less\"")
       # }
-      return(list(statistic = t3, p.value = p.value))
+      return(list(statistic = t3, p.value = p.value, METHOD <- method))
     }
   }
 }

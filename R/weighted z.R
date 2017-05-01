@@ -75,7 +75,7 @@ weighted.z.test <- function(x, y, alternative = "two.sided") {
       if (alternative == "two.sided"){
         alter <- "greater"
       }
-      if (alternative == "less" | alternative == "less"){
+      if (alternative == "less" | alternative == "greater"){
         alter <- alternative
       }
       t1 <- t.test(paired.x, paired.y, alternative = alter, paired = TRUE)

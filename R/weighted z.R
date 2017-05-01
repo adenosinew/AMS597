@@ -72,21 +72,32 @@ weighted.z.test <- function(x, y, alternative = "two.sided") {
       method <- "Weighted Z combination"
       w1 <- sqrt(n1)
       w2 <- sqrt(n2 + n3)
-      t1 <- t.test(paired.x, paired.y, alternative, paired = TRUE)
+      if (alternative == "two.sided"){
+        alter <- "greater"
+      }
+      if (alternative == "less" | alternative == "less"){
+        alter <- alternative
+      }
+      t1 <- t.test(paired.x, paired.y, alternative = alter, paired = TRUE)
       p1 <- t1$p.value
-      t2 <- t.test(tumor, normal, alternative, paired = FALSE)
+      t2 <- t.test(tumor, normal, alternative =alter, paired = FALSE)
       p2 <- t2$p.value
       z1 <- qnorm(1 - p1)
       z2 <- qnorm(1 - p2)
-      pc <- (w1 * z1 + w2 * z2) / sqrt((w1 ^ 2) + (w2 ^ 2))
+      pc <- 1 - pnorm((w1 * z1 + w2 * z2) / sqrt((w1 ^ 2) + (w2 ^ 2)))
       if (alternative == "less") {
-        pv <- pnorm(pc)
+        pv <- pc
       }
       if (alternative == "greater") {
-        pv <- 1 - pnorm(pc)
+        pv <- pc
       }
       if (alternative == "two.sided") {
-        pv <- 2 * min(pnorm(pc), 1 - pnorm(pc))
+        if (pc < 0.5){
+          pv <- 2*pc
+        }
+        else {
+          pv <- 2*(1-pc)
+        }
       }
       # else{
       #   stop("Alternative must be one of \"two.sided\",\"greater\" or \"less\"")

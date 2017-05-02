@@ -14,7 +14,7 @@
 
 heteMLE <- function(x, y, alternative = "two.sided") {
   if (length(x) != length(y)) {
-    warning("tumor sample and normal sample have different dimension. Reduce to two sample t test")
+    warning("tumor sample and normal sample have different dimension. Use two sample t test")
     Ttest <- t.test(x, y, alternative = alternative)
     return(
       list(
@@ -35,12 +35,8 @@ heteMLE <- function(x, y, alternative = "two.sided") {
     n2 <- length(tumor)
     n3 <- length(normal)
 
-    if (n1 == 1 | n2 == 1 | n3 == 1) {
-      stop("not enough observations")
-    }
-
     if (n1 == 0) {
-      warning("No paired sample found. Reduce to two sample t test")
+      warning("No paired sample found. Use two sample t test")
       Ttest <- t.test(x, y, alternative = alternative)
       return(
         list(
@@ -53,9 +49,22 @@ heteMLE <- function(x, y, alternative = "two.sided") {
       )
     }
 
-    if (n2 == 0 & n3 == 0) {
-      warning("No unpaired sample found. Reduce to paired t test")
+    else if (n2 == 0 & n3 == 0) {
+      warning("No unpaired sample found. Use paired t test")
       Ttest <- t.test(x, y, alternative = alternative,paired = TRUE)
+      return(
+        list(
+          statistic =
+            Ttest$statistic,
+          parameter = Ttest$parameter,
+          p.value = Ttest$p.value,
+          METHOD = "Two sample T test"
+        )
+      )
+    }
+    else if (n1<=1|n2<=1|n3<=1){
+      warning("Some observation is too small, Use two sample t test")
+      Ttest <- t.test(x, y, alternative = alternative)
       return(
         list(
           statistic =
@@ -109,7 +118,7 @@ heteMLE <- function(x, y, alternative = "two.sided") {
       # }
       return(list(
         statistic = Z.ls,
-        df = n1,
+        parameter = n1,
         p.value = P.value,
         METHOD = method
       ))

@@ -26,5 +26,5 @@ Modified t-test
 \examples{
 x <- c(1,2,3,4,NA,NA,1)
 y <- c(1,2,5)
-my.mod.t.test(x,y)
+modttest(x,y)
 }

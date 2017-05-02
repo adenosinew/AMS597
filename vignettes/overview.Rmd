@@ -19,20 +19,28 @@ It provided a statistical analyses in scenarios where some samples from the matc
 
 This package could process 5 procedures:
 
-- modified t-statistic of Kim et al.
-- corrected Z-test of Looney and Jones
-- MLE based test of Ekbohm under homoscedasticity
-- MLE based test of Lin and Stivers under heteroscedasticity
-- weighted Z-test combination
+- modified t-statistic of Kim et al.;
+- corrected Z-test of Looney and Jones;
+- MLE based test of Ekbohm under homoscedasticity;
+- MLE based test of Lin and Stivers under heteroscedasticity;
+- weighted Z-test combination.
 
 ## Arguments
-### data
-data is a **data frame** have two columns, the first column is tumor data and the second colum is normal data. **NA** values for missing data.
+### x,y
+$x,y$ are vector values. In our package, we assume $x$ is tumor data and $y$ is normal data. **NA** values for missing data.
 
-### var.equal
-For MLE based procedure, if `var.equal=T` will process homo- case and `var.equal=F` will process heteroscedasticity case.
+### alternative
+*alternative* can be "two.sided", "less" or "greater".
 
-## Formulas & Usages
+## Usage
+
+1. `modttest(x,y)`;
+2. `cor_Z(x,y)`;
+3. `homoMLE(x,y)`;
+4. `heteMLE(x,y)`;
+5. `weighted.z.test(x,y)`.
+
+## Theory & Formulas
 ### Modified t-statistic of Kim et al.
 The modified t-statistic $t_3$ of Kim et al.^[Kim B, Kim I, Lee S, Kim S, Rha S, Chung H. Statistical methods of translating microarray data into clinically relevant diagnostic information in colorectal cancer. Bioinformatics. 2004; 21(4): 517–528. [PubMed: 15374865]] takes the form
 $$
@@ -42,7 +50,6 @@ $$
 $$
 And the null distribution of $t_3$ is approcimated with a standard Gaussian distribution.
 
-One can call this function in the package e.g. `modTstat(data, alternative="less")`.
 
 ### Corrected Z-test of Looney and Jones
 The corrected Z-test of Looney and Jones^[ Looney S, Jones P. A method for comparing two normal means using combined samples of correlated and uncorrelated data. Statistics in Medicine. 2003; 22:1601–1610.] is based on a modified variance estimation of the standard Z-test by accounting for the correlation among the $n_1$ matched pairs,
@@ -52,7 +59,6 @@ $$
 \end{aligned}
 $$
 
-e.g. `corrZtest(data, alternative="less")`
 
 ### MLE based test
 
@@ -65,7 +71,7 @@ $$
 \end{aligned}
 $$
 
-e.g. `mle(data. var.equal=T)`
+
 
 ### Wighted Z-test Combination
 
@@ -76,6 +82,12 @@ $$
 \end{aligned}
 $$
 
-e.g. `mle(data, alternative="two.sided")`
 
-## Simulation Example
+
+## Notes
+We assume the data set is big and missing value is relatively small.  
+Instead of call particular method, we call **t.test()** in extreme case.  
+
+- While tumor and normal have different dimension, the package call **two sample t-test**; 
+- While paired sample size is very small or 0, this package call **two sample t-test**;
+- If the unpaired sample size is very small or 0, this package call **Paired t-test**;

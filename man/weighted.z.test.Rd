@@ -4,7 +4,7 @@
 \alias{weighted.z.test}
 \title{Weighted Z test combination}
 \usage{
-weighted.z.test(x, y, alternative)
+weighted.z.test(x, y, alternative = "two.sided")
 }
 \arguments{
 \item{x}{a (non-empty) numberic vector of data values.}
@@ -15,10 +15,9 @@ weighted.z.test(x, y, alternative)
 }
 \value{
 A list containing the following components:
-
-\code{statistic} the value of weighted z test combination statistic
-
-\code{p.value} the p-value for the test
+\item{statistic}{the value of weighted z test combination statistic}
+\item{p.value}{the p-value for the test}
+\item{METHOD}{the method we implement}
 }
 \description{
 Weighted Z test combination

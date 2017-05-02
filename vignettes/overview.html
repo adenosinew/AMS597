@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kexing Wu" />
 
-<meta name="date" content="2017-04-27" />
+<meta name="date" content="2017-05-01" />
 
 <title>A Simple and Robust Method for Partially Matched Samples Using the P-Values Pooling Approach</title>
 
@@ -32,7 +32,7 @@
 
 <h1 class="title toc-ignore">A Simple and Robust Method for Partially Matched Samples Using the P-Values Pooling Approach</h1>
 <h4 class="author"><em>Kexing Wu</em></h4>
-<h4 class="date"><em>2017-04-27</em></h4>
+<h4 class="date"><em>2017-05-01</em></h4>
 
 
 
@@ -45,26 +45,36 @@
 <h2>Package Info</h2>
 <p>This package could process 5 procedures:</p>
 <ul>
-<li>modified t-statistic of Kim et al.</li>
-<li>corrected Z-test of Looney and Jones</li>
-<li>MLE based test of Ekbohm under homoscedasticity</li>
-<li>MLE based test of Lin and Stivers under heteroscedasticity</li>
-<li>weighted Z-test combination</li>
+<li>modified t-statistic of Kim et al.;</li>
+<li>corrected Z-test of Looney and Jones;</li>
+<li>MLE based test of Ekbohm under homoscedasticity;</li>
+<li>MLE based test of Lin and Stivers under heteroscedasticity;</li>
+<li>weighted Z-test combination.</li>
 </ul>
 </div>
 <div id="arguments" class="section level2">
 <h2>Arguments</h2>
-<div id="data" class="section level3">
-<h3>data</h3>
-<p>data is a <strong>data frame</strong> have two columns, the first column is tumor data and the second colum is normal data. <strong>NA</strong> values for missing data.</p>
+<div id="xy" class="section level3">
+<h3>x,y</h3>
+<p><span class="math inline">\(x,y\)</span> are vector values. In our package, we assume <span class="math inline">\(x\)</span> is tumor data and <span class="math inline">\(y\)</span> is normal data. <strong>NA</strong> values for missing data.</p>
 </div>
-<div id="var.equal" class="section level3">
-<h3>var.equal</h3>
-<p>For MLE based procedure, if <code>var.equal=T</code> will process homo- case and <code>var.equal=F</code> will process heteroscedasticity case.</p>
+<div id="alternative" class="section level3">
+<h3>alternative</h3>
+<p><em>alternative</em> can be “two.sided”, “less” or “greater”.</p>
 </div>
 </div>
-<div id="formulas-usages" class="section level2">
-<h2>Formulas &amp; Usages</h2>
+<div id="usage" class="section level2">
+<h2>Usage</h2>
+<ol style="list-style-type: decimal">
+<li><code>modttest(x,y)</code>;</li>
+<li><code>cor_Z(x,y)</code>;</li>
+<li><code>homoMLE(x,y)</code>;</li>
+<li><code>heteMLE(x,y)</code>;</li>
+<li><code>weighted.z.test(x,y)</code>.</li>
+</ol>
+</div>
+<div id="theory-formulas" class="section level2">
+<h2>Theory &amp; Formulas</h2>
 <div id="modified-t-statistic-of-kim-et-al." class="section level3">
 <h3>Modified t-statistic of Kim et al.</h3>
 <p>The modified t-statistic <span class="math inline">\(t_3\)</span> of Kim et al.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> takes the form <span class="math display">\[
@@ -72,7 +82,6 @@
  t_3=\frac{{n_1}\bar{D}+{n_H}(\bar{T}-\bar{N})}{\sqrt{{n_1}{S_D}^2+{n_H}^2(S_N^2/n_3+S_T^2/n_2)}}
 \end{aligned}
 \]</span> And the null distribution of <span class="math inline">\(t_3\)</span> is approcimated with a standard Gaussian distribution.</p>
-<p>One can call this function in the package e.g. <code>modTstat(data, alternative=&quot;less&quot;)</code>.</p>
 </div>
 <div id="corrected-z-test-of-looney-and-jones" class="section level3">
 <h3>Corrected Z-test of Looney and Jones</h3>
@@ -81,7 +90,6 @@
  Z_{corr}=\frac{\bar{T^*}-\bar{N^*}}{\sqrt{S_T^{*2}/(n_1+n_2)+S_N^{*2}/(n_1+n_3)-2n_1S_{TN_1}/(n_1+n_2)(n_1+n_3)}}
 \end{aligned}
 \]</span></p>
-<p>e.g. <code>corrZtest(data, alternative=&quot;less&quot;)</code></p>
 </div>
 <div id="mle-based-test" class="section level3">
 <h3>MLE based test</h3>
@@ -91,7 +99,6 @@
  Z_{LS}=\frac{f(\bar{T_1}-\bar{T})-g(\bar{N_1}-\bar{N})+\bar{T}-\bar{N}}{\sqrt{V_1}}
 \end{aligned}
 \]</span></p>
-<p>e.g. <code>mle(data. var.equal=T)</code></p>
 </div>
 <div id="wighted-z-test-combination" class="section level3">
 <h3>Wighted Z-test Combination</h3>
@@ -100,11 +107,17 @@
  p_{ci}=1-\Phi(\frac{w_1Z_{1i}+w_2Z_{2i}}{\sqrt{w_1^2+w_2^2}})
 \end{aligned}
 \]</span></p>
-<p>e.g. <code>mle(data, alternative=&quot;two.sided&quot;)</code></p>
 </div>
 </div>
-<div id="simulation-example" class="section level2">
-<h2>Simulation Example</h2>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+<p>We assume the data set is big and missing value is relatively small.<br />
+Instead of call particular method, we call <strong>t.test()</strong> in extreme case.</p>
+<ul>
+<li>While tumor and normal have different dimension, the package call <strong>two sample t-test</strong>;</li>
+<li>While paired sample size is very small or 0, this package call <strong>two sample t-test</strong>;</li>
+<li>If the unpaired sample size is very small or 0, this package call <strong>Paired t-test</strong>;</li>
+</ul>
 </div>
 <div class="footnotes">
 <hr />

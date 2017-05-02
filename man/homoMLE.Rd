@@ -4,7 +4,7 @@
 \alias{homoMLE}
 \title{MLE based test of Ekbohm under homoscedasticity}
 \usage{
-homoMLE(x, y, alternative = c("two.sided", "less", "greater"))
+homoMLE(x, y, alternative = "two.sided")
 }
 \arguments{
 \item{x}{vector value of "tumor"}
